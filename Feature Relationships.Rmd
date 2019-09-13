@@ -1,0 +1,56 @@
+```{r}
+library(corrplot)
+library(ggplot2)
+library(LaplacesDemon)
+```
+
+```{r}
+data
+```
+
+```{r}
+corr<-cor(data)
+p.mat <- cor.mtest(data)
+
+corrplot(corr, order="hclust", insig = "blank", diag=FALSE)
+
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(corr, method="color", col=col(200),  
+         type="upper", order="hclust", 
+         addCoef.col = "black",addCoefasPercent=TRUE,
+         tl.col="black", tl.srt=45,
+         diag=FALSE 
+         )
+```
+Notes: 
+Age and maximum heart rate achieved (thalch) are inversely correlated (-40%). High correlation between oldpeak and slope is ignored because they are known to be related features. The target is comapritively highly correlated with execised induced angina (exang, -44%), ST depression induced by execercise relative to rest (oldpeak, -43%), chest pain type (cp, 43%), maximum heart rate achieved (thalach, 42%) and number of major vessels colored by flourosopy (ca, -39%). On the other hand age, cholostrol and blood pressure seems to have low correlation with the target. This insight maybe unreliable because most of the highly correlated features take less number of values than their counterparts most of whom are continuous. Further analysis is required.
+
+```{r}
+scatter.smooth(data$chol, data$trestbps)
+scatter.smooth(data$age, data$thalach)
+scatter.smooth(data$thalach, data$oldpeak)
+scatter.smooth(data$chol, data$thalach)
+scatter.smooth(data$thalach, data$trestbps)
+scatter.smooth(data$oldpeak, data$chol)
+```
+
+```{r}
+require(GGally)
+pairs <- ggpairs(data=data[,c('age','chol','trestbps','thalach','oldpeak')],
+             columns=1:3, 
+             upper = list(continuous = "density"),
+             lower = list(combo = "facetdensity"),
+             title="Age, cholestrol and blood pressure")
+pairs
+```
+
+```{r}
+joint.pr.plot(data$chol, data$thalach)
+title(main="Cholestrol vs maximum heart rate achieved", 
+   xlab="Cholestrol", ylab="Maximum heart rate achieved")
+```
+
+```{r}
+
+```
+

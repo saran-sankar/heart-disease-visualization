@@ -1,0 +1,31 @@
+```{r}
+library(ggplot2)
+```
+
+```{r}
+data
+```
+
+```{r}
+as.data.frame(table(data$trestbps))$Freq
+```
+
+```{r}
+ylabs = c("Mean age", "Mean cholestrol (mg/d)", "Mean blood pressure (mm Hg)", "Mean maximum heart rate achieved", "Mean ST depression induced by execercise")
+feature_names = c("age", "chol", "trestbps", "thalach","oldpeak")
+names(ylabs) = feature_names
+
+for (feature_name in feature_names){
+  ylab = ylabs[feature_name]
+  barplot(c(mean(subset(data, target==0)[,feature_name]), mean(subset(data, target==1)[,feature_name])), 
+          xlab="Heart Disease", names.arg=c("No", "Yes"), ylab=ylab,
+          col=c("olivedrab3","indianred2"))
+}
+```
+Notes: 
+ST depression induced by execercise relative to rest (oldpeak) seems to be a very significant indicator of heart disease.
+ 
+```{r}
+
+```
+
